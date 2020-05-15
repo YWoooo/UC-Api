@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
-const router = Router()
+const loginRouter = Router()
 
-router.get('/', (req, res) => {
+loginRouter.get('/login', (req, res) => {
     res.send('This is a login route.')
 })
 
-export { router }
+export { loginRouter }
