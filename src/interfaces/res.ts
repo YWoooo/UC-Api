@@ -8,4 +8,5 @@ export interface ResInterface {
  *  1: Success.
  *  -1: Fail.
  * -2: Wrong format of param.
+ * -3: Duplicated.
  */

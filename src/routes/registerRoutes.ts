@@ -2,8 +2,8 @@ import { Router } from 'express'
 import { register } from '../models/registerModels'
 import { RegisterDataInterface } from '../interfaces/registerData'
 import isEmail from 'validator/lib/isEmail';
-const
-    passwordRule = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*^.{8,15}$)/,
+const // 至少一小寫，至少一大寫，至少一數字，6 ~ 15 位
+    passwordRule = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*^.{6,15}$)/,
     registerRouter = Router()
 
 registerRouter.post('/register', async (req, res) => {
