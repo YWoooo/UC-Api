@@ -1,12 +1,12 @@
 export interface ResInterface {
-    status: number;
+    code: number;
     msg?: string;
 }
 
 /**
- * status
- *  1: Success.
- *  -1: Fail.
- * -2: Wrong format of param.
- * -3: Duplicated.
+ * code
+ *  1: Request success. All good.
+ *  -1: Request fail Don't know why.
+ * -20: Wrong format of param.
+ * -21: Duplicated.
  */
