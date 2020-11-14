@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import { loginRouter } from './routes/loginRoutes'
-import { registerRouter } from './routes/registerRoutes'
+import { registerRouter } from './modules/auth/routes/register'
 
 const app = express(),
     corsOptions = {
