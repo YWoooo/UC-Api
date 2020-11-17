@@ -6,14 +6,9 @@ const registerRouter = Router()
 
 registerRouter.post('/register', async (req, res) => {
   const { email, password } = req.body
-  const params = {
-    email,
-    password,
-    time: Date.now()
-  }
 
   try {
-    return res.send(await register(params))
+    return res.send(await register({ email, password }))
   } catch (e) {
     console.log('In register route: ', e)
     res.status(500).send(res500)

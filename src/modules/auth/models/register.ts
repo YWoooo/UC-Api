@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 // Utils & configs.
 import { getCollection } from '../../../utils/get-collection';
 import { setJwtForAuth } from '../../../utils/set-jwt-for-auth';
@@ -6,15 +5,15 @@ import { res500 } from '../../../configs/common-reses'
 // Types.
 import { Res } from '../../../types/res';
 import { RegisterParams } from '../types/registerData'
+import User from '../../../types/user';
 
 interface ResData {
   token: string;
 }
 
-export const register = async (params: RegisterParams): Promise<Res<ResData | null>> => {
+export const register = async ({ email, password }: RegisterParams): Promise<Res<ResData | null>> => {
   try {
     const collection = await getCollection('user')
-    const { email } = params
     const isEmailExist = await collection.findOne({ email })
     if (isEmailExist) {
       return {
@@ -24,8 +23,7 @@ export const register = async (params: RegisterParams): Promise<Res<ResData | nu
       }
     }
 
-    const id = uuidv4()
-    await collection.insertOne({ ...params, id })
+    await collection.insertOne(new User(email, password))
     return {
       code: 201,
       data: {
