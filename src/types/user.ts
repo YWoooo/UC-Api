@@ -1,9 +1,7 @@
-import Entity from './common/Entity'
-
-export default class User extends Entity {
+export default class User {
   constructor(
     public email: string,
     public password: string,
     public tradeAccs: string[] = []
-  ) { super() }
+  ) { }
 }
