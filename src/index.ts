@@ -1,3 +1,4 @@
+import 'module-alias/register';
 require('dotenv').config({ path: './process.env' })
 import express from 'express'
 import bodyParser from 'body-parser'
