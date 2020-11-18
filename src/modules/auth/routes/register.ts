@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { register } from '../models/register'
-import { res500 } from '../../../configs/common-reses'
+import { res500 } from '@/src/configs/common-reses'
 
 const registerRouter = Router()
 

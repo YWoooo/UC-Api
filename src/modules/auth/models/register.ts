@@ -1,11 +1,11 @@
 // Utils & configs.
-import { getCollection } from '../../../utils/get-collection';
-import { setJwtForAuth } from '../../../utils/set-jwt-for-auth';
-import { res500 } from '../../../configs/common-reses'
+import { getCollection } from '@/src/utils/get-collection';
+import { setJwtForAuth } from '@/src/utils/set-jwt-for-auth';
+import { res500 } from '@/src/configs/common-reses'
 // Types.
-import { Res } from '../../../types/res';
+import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'
-import User from '../../../types/user';
+import User from '@/src/types/user';
 
 interface ResData {
   token: string;
