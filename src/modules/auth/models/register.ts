@@ -22,8 +22,12 @@ export const register = async ({ email, password }: RegisterParams): Promise<Res
         message: 'The email is used, please use another email instead.'
       }
     }
-
-    await collection.insertOne(new User(email, password))
+    await collection.insertOne(
+      new User(
+        email,
+        password,
+        setAccountString(await collection.countDocuments())
+      ))
     return {
       code: 201,
       data: {
@@ -35,4 +39,8 @@ export const register = async ({ email, password }: RegisterParams): Promise<Res
     console.log('In register model: ', e)
     return res500
   }
+}
+
+const setAccountString = (no: number) => {
+  return 'N' + `${no + 1}`.padStart(6, '0')
 }
