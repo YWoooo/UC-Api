@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 // Routers.
-import { loginRouter } from './routes/loginRoutes'
+import { loginRouter } from './modules/auth/routes/login'
 import { registerRouter } from './modules/auth/routes/register'
 import { accountInfoRouter } from './modules/account-info/routes/account-info'
 
