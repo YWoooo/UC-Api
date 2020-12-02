@@ -7,6 +7,12 @@ export const res200: Res<null> = {
   message: 'Success.'
 }
 
+export const res400: Res<null> = {
+  code: 400,
+  data: null,
+  message: 'Missing some param(s), please check again.'
+}
+
 export const res401: Res<null> = {
   code: 401,
   data: null,
