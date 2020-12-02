@@ -8,6 +8,7 @@ import cors from 'cors'
 import { loginRouter } from './modules/auth/routes/login'
 import { registerRouter } from './modules/auth/routes/register'
 import { accountInfoRouter } from './modules/account-info/routes/account-info'
+import { depositRouter } from './modules/wallet/routes/deposit'
 
 // Middlewares.
 import { authByToken } from './middelware/auth-by-token';
@@ -23,6 +24,7 @@ app.use(loginRouter)
 app.use(registerRouter)
 app.use(authByToken);
 app.use(accountInfoRouter)
+app.use(depositRouter)
 
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`Listening on port ${port}.`))
