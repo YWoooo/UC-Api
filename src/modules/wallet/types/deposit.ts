@@ -8,8 +8,20 @@ export interface DepositParams {
     channel: DepositChannel;
 }
 
+export interface DepositRecord extends DepositParams {
+    status: DepositStatus
+    createdTime: number
+}
+
 enum DepositChannel {
     bankCard,
     wireTransfer,
     bilypay
+}
+
+export enum DepositStatus {
+    none,
+    success,
+    fail,
+    reviewing
 }
