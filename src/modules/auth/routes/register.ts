@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import { register } from '../models/register'
 import { res400, res500 } from '@/src/configs/common-reses'
-
 const registerRouter = Router()
 
 registerRouter.post('/register', async (req, res) => {

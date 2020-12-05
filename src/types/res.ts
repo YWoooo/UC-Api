@@ -1,6 +1,7 @@
-export interface ResInterface {
-  code: number;
-  msg?: string;
+export interface Res<Data> {
+  code: number // Mostly http status code like.
+  data: Data // If there's no data to send, please send null.
+  message: string
 }
 
 /**
@@ -11,9 +12,3 @@ export interface ResInterface {
  * -21: Duplicated.
  * 200001: The thing you want to create, such as a new user account, is already exist.
  */
-
-export interface Res<Data> {
-  code: number // Mostly http status code like.
-  data: Data // If there's no data to send, please send null.
-  message: string
-}

@@ -4,7 +4,7 @@ import isEqual from 'lodash.isequal'
 /**
  * Given a array of keys and an object,
  * return an object with these keys, 
- * or null if one of keys cna't be found 
+ * or null if one of keys cna't be found.
  * @param {any} object 
  * @param {string[]} keys
  * @returns {any} 
