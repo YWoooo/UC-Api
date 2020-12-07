@@ -8,11 +8,9 @@ export const authByToken = (req: Request, res: Response, next: NextFunction) => 
     if (!token) return res.status(401).send(res401)
 
     const jwtKey = process.env.JWT_KEY as string;
-    jwt.verify(token, jwtKey, err => {
-      if (err) return res.status(401).send(res401)
-    })
-
-    next()
+    jwt.verify(token, jwtKey, err => err
+      ? res.status(401).send(res401)
+      : next())
   } catch (e) {
     console.log('In authByToken: ', e)
     res.status(500).send(res500)
