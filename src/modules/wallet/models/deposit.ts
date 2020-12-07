@@ -6,16 +6,18 @@ import isNil from 'lodash.isnil'
 // Types.
 import { Db } from 'mongodb';
 import { Res } from '@/src/types/res';
-import { DepositParams, DepositRecord, DepositStatus } from '../types/deposit';
+import { DepositParams, DepositResData, DepositRecord, DepositStatus } from '../types/deposit';
 
-export const deposit = async (params: DepositParams): Promise<Res<null>> => {
+export const deposit = async (params: DepositParams): Promise<Res<DepositResData>> => {
   try {
     const db = await getDb()
     await addBalance(params.account, +params.toAmount, db)
     await addRecord(params, db)
     return {
-      code: 200,
-      data: null,
+      code: 201,
+      data: {
+        url: 'www.google.com' // Just for testing.
+      },
       message: 'Deposit success.'
     }
   } catch (e) {
