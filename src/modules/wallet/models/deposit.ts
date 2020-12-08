@@ -1,14 +1,20 @@
-// Utils & configs.
-import { getDb } from '@/src/utils/get-db';
-import { res400, res500 } from '@/src/configs/common-reses'
-import some from 'lodash.some'
-import isNil from 'lodash.isnil'
 // Types.
 import { Db } from 'mongodb';
 import { Res } from '@/src/types/res';
 import { DepositParams, DepositResData, DepositRecord, DepositStatus } from '../types/deposit';
+// Utils.
+import { getDb } from '@/src/utils/get-db';
+import some from 'lodash.some'
+import isNil from 'lodash.isnil'
+import { isAmountInLimit } from '../utils/is-amount-in-limit'
+import { isAmountCorrect } from '../utils/is-amount-correct'
+// Configs.
+import { res400, res500 } from '@/src/configs/common-reses'
 
-export const deposit = async (params: DepositParams): Promise<Res<DepositResData>> => {
+export const deposit = async (params: DepositParams): Promise<Res<DepositResData | null>> => {
+  const { fromAmount, toAmount, rate } = params
+  if (!isValid(fromAmount, toAmount, rate)) return res400
+
   try {
     const db = await getDb()
     await addBalance(params.account, +params.toAmount, db)
@@ -25,6 +31,11 @@ export const deposit = async (params: DepositParams): Promise<Res<DepositResData
     if (e.message === '400') return res400
     return res500
   }
+}
+
+const isValid = (fromAmount: number, toAmount: number, rate: number) => {
+  return isAmountInLimit(toAmount, 100, 1500) &&
+    isAmountCorrect(fromAmount, toAmount, rate)
 }
 
 const addBalance = async (account: string, amount: number, db: Db) => {
