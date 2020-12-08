@@ -6,14 +6,13 @@ import { DepositParams, DepositResData, DepositRecord, DepositStatus } from '../
 import { getDb } from '@/src/utils/get-db';
 import some from 'lodash.some'
 import isNil from 'lodash.isnil'
-import { isAmountInLimit } from '../utils/is-amount-in-limit'
-import { isAmountCorrect } from '../utils/is-amount-correct'
+import { isAmountValid } from '../utils/is-amount-valid'
 // Configs.
 import { res400, res500 } from '@/src/configs/common-reses'
 
 export const deposit = async (params: DepositParams): Promise<Res<DepositResData | null>> => {
   const { fromAmount, toAmount, rate } = params
-  if (!isValid(fromAmount, toAmount, rate)) return res400
+  if (!isAmountValid(fromAmount, toAmount, rate)) return res400
 
   try {
     const db = await getDb()
@@ -33,13 +32,9 @@ export const deposit = async (params: DepositParams): Promise<Res<DepositResData
   }
 }
 
-const isValid = (fromAmount: number, toAmount: number, rate: number) => {
-  return isAmountInLimit(toAmount, 100, 1500) &&
-    isAmountCorrect(fromAmount, toAmount, rate)
-}
-
 const addBalance = async (account: string, amount: number, db: Db) => {
   if (!account || !amount) throw new Error('400')
+  // Bug: when no account was found?
   await db.collection('user').findOneAndUpdate(
     { account },
     { $inc: { balance: amount } }
