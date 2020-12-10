@@ -13,6 +13,12 @@ export const res400: Res<null> = {
   message: 'Some param(s) is missing or incorrect, please check again.'
 }
 
+export const res400001: Res<null> = {
+  code: 400,
+  data: null,
+  message: 'The account doesn\'t exist, please check again.'
+}
+
 export const res401: Res<null> = {
   code: 401,
   data: null,
@@ -24,3 +30,8 @@ export const res500: Res<null> = {
   data: null,
   message: 'Unexpected error, please contact us.'
 }
+
+
+/**
+ * 400001: Account doesn't exist.
+ */
