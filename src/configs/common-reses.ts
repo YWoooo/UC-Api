@@ -1,6 +1,10 @@
 // Some common response.
 import { Res } from '../types/res';
 
+// If some codes're > 1000, use it.
+export const setStatusCode = (code: number): number =>
+  code < 1000 ? code : Math.floor(code / 1000)
+
 export const res200: Res<null> = {
   code: 200,
   data: null,
