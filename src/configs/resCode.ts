@@ -1,4 +1,4 @@
-export enum errorCode {
+export enum resCode {
   missingParams = 400000,
   notExistUser = 400001,
   notEnoughBalance = 400002,
