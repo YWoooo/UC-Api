@@ -3,7 +3,7 @@ import { DepositParams, DepositRecord, DepositStatus } from '../types/deposit';
 import { WithdrawalParams, WithdrawalRecord, WithdrawalStatus } from '../types/withdrawal';
 
 export const addDepositRecord = async (params: DepositParams, db: Db) => {
-  const records = db.collection(`withdrawal-record`)
+  const records = db.collection(`deposit-record`)
   const record: DepositRecord = {
     ...params,
     createdTime: setTimeStamp(),
