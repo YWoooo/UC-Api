@@ -1,26 +1,49 @@
-import { errorCode } from '@/src/configs/errorCode'
+import { resCode } from '@/src/configs/resCode'
+import { DepositConfigs } from '../configs/depositConfigs'
 import { withdrawalConfigs } from '../configs/withdrawal-configs'
+import { DepositParams } from '../types/deposit'
 import { WithdrawalParams } from '../types/withdrawal'
 import some from 'lodash.some'
 import isNil from 'lodash.isnil'
 
-export const checkWithdrawalParams = (params: WithdrawalParams) => {
-  if (!isInOfficeHour()) return errorCode.notOfficeHour
-  if (some(params, isNil)) return errorCode.missingParams
+export const checkWithdrawalParams = (params: WithdrawalParams): number => {
+  if (!isInOfficeHour()) return resCode.notOfficeHour
+  if (isParamMissing(params)) return resCode.missingParams
 
   const { fromAmount, toAmount, rate: clientRate } = params
   const { rate: serverRate, minAmount, maxAmount } = withdrawalConfigs
 
   if (!isAmountInLimit(fromAmount, minAmount, maxAmount))
-    return errorCode.overOrUnderLimit
+    return resCode.overOrUnderLimit
 
   if (!isRateCorrect(clientRate, serverRate))
-    return errorCode.incorrectRate
+    return resCode.incorrectRate
 
   if (!isAmountCorrect(fromAmount, toAmount))
-    return errorCode.incorrectAmount
+    return resCode.incorrectAmount
+
   return 0
 }
+
+export const checkDepositParams = (params: DepositParams): number => {
+  if (isParamMissing(params)) return resCode.missingParams
+
+  const { fromAmount, toAmount, rate: clientRate } = params
+  const { rate: serverRate, minAmount, maxAmount } = DepositConfigs
+
+  if (!isAmountInLimit(fromAmount, minAmount, maxAmount))
+    return resCode.overOrUnderLimit
+
+  if (!isRateCorrect(clientRate, serverRate))
+    return resCode.incorrectRate
+
+  if (!isAmountCorrect(fromAmount, toAmount))
+    return resCode.incorrectAmount
+
+  return 0
+}
+
+const isParamMissing = (params: any) => some(params, isNil)
 
 const isInOfficeHour = () => {
   const hour = new Date().getHours()
