@@ -10,21 +10,18 @@ interface ResData {
   token: string;
 }
 
-export const login = async ({ email, password }: RegisterParams): Promise<Res<ResData | null>> => {
+export const login = async ({ email, password }: RegisterParams): Promise<Res<ResData>> => {
   try {
     const collection = await getCollection('user')
     const user = await collection.findOne({ email })
 
-    if (user?.password !== password) return res401
+    if (user?.password !== password) return { code: 401 }
     return {
       code: 201,
-      data: {
-        token: setJwtForAuth(email)
-      },
-      message: 'Login success.'
+      data: { token: setJwtForAuth(email) },
     }
   } catch (e) {
     console.log('In login model: ', e)
-    return res500
+    return { code: 500 }
   }
 }

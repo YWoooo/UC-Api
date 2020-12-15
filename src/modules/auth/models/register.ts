@@ -1,7 +1,6 @@
 // Utils & configs.
 import { getCollection } from '@/src/utils/get-collection';
 import { setJwtForAuth } from '@/src/utils/set-jwt-for-auth';
-import { res500 } from '@/src/configs/common-reses'
 // Types.
 import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'
@@ -11,17 +10,11 @@ interface ResData {
   token: string;
 }
 
-export const register = async ({ email, password }: RegisterParams): Promise<Res<ResData | null>> => {
+export const register = async ({ email, password }: RegisterParams): Promise<Res<ResData>> => {
   try {
     const collection = await getCollection('user')
     const isEmailExist = await collection.findOne({ email })
-    if (isEmailExist) {
-      return {
-        code: 200001,
-        data: null,
-        message: 'The email is used, please use another email instead.'
-      }
-    }
+    if (isEmailExist) return { code: 200001 }
     await collection.insertOne(
       new User(
         email,
@@ -30,17 +23,13 @@ export const register = async ({ email, password }: RegisterParams): Promise<Res
       ))
     return {
       code: 201,
-      data: {
-        token: setJwtForAuth(email)
-      },
-      message: 'Register success.'
+      data: { token: setJwtForAuth(email) }
     }
   } catch (e) {
     console.log('In register model: ', e)
-    return res500
+    return { code: 500 }
   }
 }
 
-const setAccountString = (no: number) => {
-  return 'N' + `${no + 1}`.padStart(6, '0')
-}
+const setAccountString = (no: number) =>
+  'N' + `${no + 1}`.padStart(6, '0')
