@@ -1,14 +1,7 @@
 import { PayParams } from './pay'
 export interface DepositParams extends PayParams {
-  // account: string;
-  // fromAmount: number;
-  // fromCcy: string;
-  // toAmount: number;
-  // toCcy: string;
-  // rate: number;
   channel: DepositChannel;
 }
-
 export interface DepositResData {
   url: string;
 }
