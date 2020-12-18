@@ -1,7 +1,6 @@
 // Utils & configs.
 import { getCollection } from '@/src/utils/get-collection';
 import { setJwtForAuth } from '@/src/utils/set-jwt-for-auth';
-import { res401, res500 } from '@/src/configs/common-reses'
 // Types.
 import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'

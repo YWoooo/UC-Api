@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { setStatusCode } from '@/src/configs/common-reses'
+import { setStatusCode } from '@/src/utils/set-status-code'
 import { withdrawal } from '../models/withdrawal'
 const withdrawalRouter = Router()
 

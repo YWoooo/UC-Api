@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { login } from '../models/login'
-import { setStatusCode, res500 } from '@/src/configs/common-reses'
+import { setStatusCode } from '@/src/utils/set-status-code'
 
 const loginRouter = Router()
 

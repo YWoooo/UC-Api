@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { setStatusCode } from '@/src/configs/common-reses'
+import { setStatusCode } from '@/src/utils/set-status-code'
 import { deposit } from '../models/deposit'
 const depositRouter = Router()
 
