@@ -1,8 +1,13 @@
+// Configs.
 import { resCode } from '@/src/configs/resCode'
 import { DepositConfigs } from '../configs/depositConfigs'
 import { withdrawalConfigs } from '../configs/withdrawal-configs'
+import { trasnferConfigs } from '../configs/transfer-configs'
+// Types.
 import { DepositParams } from '../types/deposit'
 import { WithdrawalParams } from '../types/withdrawal'
+import { TransferParams } from '../types/transfer'
+// Utils.
 import some from 'lodash.some'
 import isNil from 'lodash.isnil'
 
@@ -36,6 +41,21 @@ export const checkWithdrawalParams = (params: WithdrawalParams): number => {
 
   if (!isRateCorrect(clientRate, serverRate))
     return resCode.incorrectRate
+
+  if (!isAmountCorrect(fromAmount, toAmount))
+    return resCode.incorrectAmount
+
+  return 0
+}
+
+export const checkTransferParams = (params: TransferParams): number => {
+  if (isParamMissing(params)) return resCode.missingParams
+
+  const { fromAmount, toAmount } = params
+  const { minAmount, maxAmount } = trasnferConfigs
+
+  if (!isAmountInLimit(fromAmount, minAmount, maxAmount))
+    return resCode.overOrUnderLimit
 
   if (!isAmountCorrect(fromAmount, toAmount))
     return resCode.incorrectAmount
