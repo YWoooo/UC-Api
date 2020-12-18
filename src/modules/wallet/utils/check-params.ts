@@ -6,12 +6,11 @@ import { WithdrawalParams } from '../types/withdrawal'
 import some from 'lodash.some'
 import isNil from 'lodash.isnil'
 
-export const checkWithdrawalParams = (params: WithdrawalParams): number => {
-  if (!isInOfficeHour()) return resCode.notOfficeHour
+export const checkDepositParams = (params: DepositParams): number => {
   if (isParamMissing(params)) return resCode.missingParams
 
   const { fromAmount, toAmount, rate: clientRate } = params
-  const { rate: serverRate, minAmount, maxAmount } = withdrawalConfigs
+  const { rate: serverRate, minAmount, maxAmount } = DepositConfigs
 
   if (!isAmountInLimit(fromAmount, minAmount, maxAmount))
     return resCode.overOrUnderLimit
@@ -25,11 +24,12 @@ export const checkWithdrawalParams = (params: WithdrawalParams): number => {
   return 0
 }
 
-export const checkDepositParams = (params: DepositParams): number => {
+export const checkWithdrawalParams = (params: WithdrawalParams): number => {
+  if (!isInOfficeHour()) return resCode.notOfficeHour
   if (isParamMissing(params)) return resCode.missingParams
 
   const { fromAmount, toAmount, rate: clientRate } = params
-  const { rate: serverRate, minAmount, maxAmount } = DepositConfigs
+  const { rate: serverRate, minAmount, maxAmount } = withdrawalConfigs
 
   if (!isAmountInLimit(fromAmount, minAmount, maxAmount))
     return resCode.overOrUnderLimit
