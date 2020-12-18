@@ -1,6 +1,8 @@
-import { PayParams } from './pay'
-
-export interface TransferParams extends PayParams {
+export interface TransferParams {
+  fromAccount: string;
+  toAccount: string;
+  amount: number;
+  ccy: string;
 }
 
 export enum TransferStatus {
