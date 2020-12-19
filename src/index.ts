@@ -7,6 +7,7 @@ import cors from 'cors'
 // Routers.
 import { loginRouter } from './modules/auth/routes/login'
 import { registerRouter } from './modules/auth/routes/register'
+import { userInfoRouter } from './modules/user-info/routes/user-info'
 import { accountInfoRouter } from './modules/account-info/routes/account-info'
 import { depositRouter } from './modules/wallet/routes/deposit'
 import { withdrawalRouter } from './modules/wallet/routes/withdrawal'
@@ -26,6 +27,7 @@ app.use(cors(corsOptions))
 app.use(loginRouter)
 app.use(registerRouter)
 app.use(authByToken);
+app.use(userInfoRouter)
 app.use(accountInfoRouter)
 app.use(depositRouter)
 app.use(withdrawalRouter)

@@ -8,6 +8,7 @@ export const authByToken = (req: Request, res: Response, next: NextFunction) => 
   const jwtKey = process.env.JWT_KEY as string;
   try {
     const decoded: any = jwt.verify(token, jwtKey)
+    res.locals.account = decoded.account
     const accountFromBody = req.body.account
     if (accountFromBody && accountFromBody !== decoded.account) throw new Error
     next()
