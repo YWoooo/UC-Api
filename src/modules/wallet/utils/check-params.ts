@@ -50,7 +50,7 @@ export const checkWithdrawalParams = (params: WithdrawalParams): number => {
 
 export const checkTransferParams = (params: TransferParams): number => {
   const { amount } = params
-  if (!amount) return 400
+  if (!amount) return 400000
 
   const { minAmount, maxAmount } = trasnferConfigs
   if (!isAmountInLimit(amount, minAmount, maxAmount))
