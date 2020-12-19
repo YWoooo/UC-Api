@@ -49,11 +49,10 @@ export const checkWithdrawalParams = (params: WithdrawalParams): number => {
 }
 
 export const checkTransferParams = (params: TransferParams): number => {
-  if (isParamMissing(params)) return resCode.missingParams
-
   const { amount } = params
-  const { minAmount, maxAmount } = trasnferConfigs
+  if (!amount) return 400
 
+  const { minAmount, maxAmount } = trasnferConfigs
   if (!isAmountInLimit(amount, minAmount, maxAmount))
     return resCode.overOrUnderLimit
 
