@@ -17,7 +17,7 @@ export const login = async ({ email, password }: RegisterParams): Promise<Res<Re
     if (user?.password !== password) return { code: 401 }
     return {
       code: 201,
-      data: { token: setJwtForAuth(email) },
+      data: { token: setJwtForAuth(user.account) },
     }
   } catch (e) {
     console.log('In login model: ', e)

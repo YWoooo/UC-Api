@@ -2,16 +2,16 @@ import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express';
 
 export const authByToken = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '')
-    if (!token) return res.status(401).send({ code: 401 })
+  const token = req.header('Authorization')?.replace('Bearer ', '')
+  if (!token) return res.status(401).send({ code: 401 })
 
-    const jwtKey = process.env.JWT_KEY as string;
-    jwt.verify(token, jwtKey, err => err
-      ? res.status(401).send({ code: 401 })
-      : next())
+  const jwtKey = process.env.JWT_KEY as string;
+  try {
+    const decoded: any = jwt.verify(token, jwtKey)
+    const accountFromBody = req.body.account
+    if (accountFromBody && accountFromBody !== decoded.account) throw new Error
+    next()
   } catch (e) {
-    console.log('In authByToken: ', e)
-    res.status(500).send({ code: 500 })
+    res.status(401).send({ code: 401 })
   }
 }
