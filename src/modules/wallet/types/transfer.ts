@@ -5,6 +5,11 @@ export interface TransferParams {
   ccy: string;
 }
 
+export interface TransferlRecord extends TransferParams {
+  status: TransferStatus
+  createdTime: number
+}
+
 export enum TransferStatus {
   none,
   success,

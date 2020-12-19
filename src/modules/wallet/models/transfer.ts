@@ -5,6 +5,7 @@ import { Collection } from 'mongodb';
 // Utils & configs.
 import { getDb } from '@/src/utils/get-db';
 import { checkTransferParams } from '../utils/check-params';
+import { addTransferRecord } from '../utils/add-record'
 import { resCode } from '@/src/configs/resCode'
 
 export const transfer = async (params: TransferParams): Promise<Res> => {
@@ -24,6 +25,8 @@ export const transfer = async (params: TransferParams): Promise<Res> => {
       addMoney(users, toAccount, amount)
     ])
     code = res[0] || res[1]
+
+    addTransferRecord(params, db)
     return { code }
   }
   catch (e) {
