@@ -1,9 +1,10 @@
 export enum resCode {
   missingParams = 400000,
   notExistUser = 400001,
-  notEnoughBalance = 400002,
-  incorrectRate = 400003,
-  overOrUnderLimit = 400004,
-  incorrectAmount = 400005,
-  notOfficeHour = 400006,
+  wrongAccountOrPassword = 400002,
+  notEnoughBalance = 400003,
+  incorrectRate = 400004,
+  overOrUnderLimit = 400005,
+  incorrectAmount = 400006,
+  notOfficeHour = 400007,
 }

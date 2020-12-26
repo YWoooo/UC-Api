@@ -16,7 +16,7 @@ export const login = async ({ email, password }: RegisterParams): Promise<Res<Re
     const user = await collection.findOne({ email })
     if (!user) return { code: resCode.notExistUser }
 
-    if (user?.password !== password) return { code: 401 }
+    if (user?.password !== password) return { code: resCode.wrongAccountOrPassword }
     return {
       code: 201,
       data: { token: setJwtForAuth(user.account) },
