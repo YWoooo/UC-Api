@@ -17,7 +17,8 @@ import { authByToken } from './middelware/auth-by-token';
 
 const app = express()
 const corsOptions = {
-  origin: ['http://localhost:3000',]
+  origin: ['http://localhost:3000',],
+  exposedHeaders: ['AccessToken', 'RefreshToken']
 }
 
 app.use(bodyParser.urlencoded({ extended: true }))

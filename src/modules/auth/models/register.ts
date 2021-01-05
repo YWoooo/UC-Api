@@ -1,13 +1,14 @@
 // Utils & configs.
 import { getCollection } from '@/src/utils/get-collection';
-import { setJwtForAuth } from '@/src/utils/set-jwt-for-auth';
+import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
 // Types.
 import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'
 import User from '@/src/types/user';
 
 interface ResData {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const register = async ({ email, password }: RegisterParams): Promise<Res<ResData>> => {
@@ -21,9 +22,13 @@ export const register = async ({ email, password }: RegisterParams): Promise<Res
         password,
         setAccountString(await collection.countDocuments())
       ))
+    const data = {
+      accessToken: setAccessToken(email),
+      refreshToken: setRefreshToken(email)
+    }
     return {
       code: 201,
-      data: { token: setJwtForAuth(email) }
+      data,
     }
   } catch (e) {
     console.log('In register model: ', e)
