@@ -37,13 +37,16 @@ const authAccessToken = (accessToken: string, accountFromDecoded: string, accoun
 const authRefreshToken = async (account: string, req: Request) => {
   const tokenFromClient = req.header('RefreshToken')
   if (!tokenFromClient) return 401
+  try {
+    jwt.verify(tokenFromClient, jwtKey)
+  } catch (e) {
+    return 401
+  }
 
   try {
     const db = await getDb()
     const user = await db.collection('loggedin-user').findOne({ account })
     const tokenFromDb = user.refreshToken
-
-    jwt.verify(tokenFromDb, jwtKey)
     return tokenFromClient === tokenFromDb ? 200 : 401
   } catch (e) {
     return 500
