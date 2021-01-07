@@ -6,10 +6,6 @@ import { resCode } from '@/src/configs/resCode'
 import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'
 import { Db } from 'mongodb';
-interface ResData {
-  accessToken: string;
-  refreshToken: string;
-}
 
 export const login = async ({ email, password }: RegisterParams): Promise<Res> => {
   try {
@@ -38,12 +34,17 @@ export const login = async ({ email, password }: RegisterParams): Promise<Res> =
 const storeRefreshToken = async (db: Db, account: string) => {
   try {
     const refreshToken = setRefreshToken(account)
-    await db.collection('loggedin-user').insertOne({
-      account,
-      refreshToken
-    })
+    const query = { account }
+    const update = { $set: { refreshToken } }
+    const options = { upsert: true }
+    await db.collection('loggedin-user').findOneAndUpdate(
+      query,
+      update,
+      options
+    )
     return refreshToken
   } catch (e) {
+    console.log(e)
     return ''
   }
 }

@@ -4,7 +4,7 @@ import { getDb } from '@/src/utils/get-db'
 import { setRefreshToken } from '@/src/utils/set-jwt-for-auth'
 const jwtKey = process.env.JWT_KEY as string;
 
-export const authByToken = (req: Request, res: Response, next: NextFunction) => {
+export const authByToken = async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = req.header('Authorization')?.replace('Bearer ', '')
   if (!accessToken) return 401
 
@@ -20,10 +20,11 @@ export const authByToken = (req: Request, res: Response, next: NextFunction) => 
     )
     next()
   } catch (e) {
+    let code = 401
     if (e.name === 'TokenExpiredError') {
-      authRefreshToken(accountFromBody, req)
+      code = await authRefreshToken(accountFromDecoded, req) || 500
     }
-    res.status(401).send({ code: 401 })
+    res.status(code).send({ code })
   }
 }
 
@@ -33,19 +34,18 @@ const authAccessToken = (accessToken: string, accountFromDecoded: string, accoun
   if (accountFromBody && accountFromBody !== accountFromDecoded) throw new Error
 }
 
-const authRefreshToken = async (accountFromBody: string, req: Request) => {
+const authRefreshToken = async (account: string, req: Request) => {
   const tokenFromClient = req.header('RefreshToken')
   if (!tokenFromClient) return 401
 
   try {
     const db = await getDb()
-    const user = await db.collection('loggedin-user').findOne({ account: accountFromBody })
-    const tokenFromDb = user.token
+    const user = await db.collection('loggedin-user').findOne({ account })
+    const tokenFromDb = user.refreshToken
 
     jwt.verify(tokenFromDb, jwtKey)
-    if (tokenFromClient !== tokenFromDb) throw new Error
-
+    return tokenFromClient === tokenFromDb ? 200 : 401
   } catch (e) {
-    return 401
+    return 500
   }
 }
