@@ -13,7 +13,7 @@ import { withdrawalRouter } from './modules/wallet/routes/withdrawal'
 import { transferRouter } from './modules/wallet/routes/transfer'
 
 // Middlewares.
-import { authByToken } from './middelware/auth-by-token';
+import authByToken from './middelware/authByToken';
 
 const app = express()
 const corsOptions = {
