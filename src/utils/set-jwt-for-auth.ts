@@ -1,9 +1,15 @@
 import jwt from 'jsonwebtoken'
 
 const jwtKey = process.env.JWT_KEY as string
-const options = {
+const accessTokenOptions = {
+  expiresIn: '15m'
+}
+const refreshTokenOptions = {
   expiresIn: '1 day'
 }
 
-export const setJwtForAuth = (account: string) =>
-  jwt.sign({ account }, jwtKey, options)
+export const setAccessToken = (account: string) =>
+  jwt.sign({ account }, jwtKey, accessTokenOptions)
+
+export const setRefreshToken = (account: string) =>
+  jwt.sign({ account }, jwtKey, refreshTokenOptions)
