@@ -18,7 +18,7 @@ import authByToken from './middelware/authByToken';
 
 const app = express()
 const corsOptions = {
-  origin: ['http://localhost:3000',],
+  origin: ['http://localhost:3000', 'https://yw-uc.herokuapp.com'],
   exposedHeaders: ['AccessToken', 'RefreshToken']
 }
 
