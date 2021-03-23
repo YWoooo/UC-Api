@@ -1,24 +1,34 @@
 import { Router } from 'express'
 import { login } from '../models/login'
-import { setStatusCode } from '@/src/utils/set-status-code'
-
 const loginRouter = Router()
 
 loginRouter.post('/login', async (req, res) => {
-  const { email, password } = req.body
-  if (!email || !password) return res.status(400).send({ code: 400 })
-
   try {
-    const { code, headers } = await login({ email, password })
+    const { email, password } = req.body
+    if (!email || !password) {
+      throw new Error('Missing params.')
+    }
+    const { headers } = await login({ email, password })
+
     return res
-      .status(setStatusCode(code))
+      .status(200)
       .header('AccessToken', headers?.accessToken)
       .header('RefreshToken', headers?.refreshToken)
       .send({ message: 'ok' })
-  } catch (e) {
-    console.log('In register route: ', e)
-    res.status(500).send({ code: 500 })
+  }
+  catch (e) {
+    const code = err400.indexOf(e.message) !== -1 ? 400 : 500
+    console.log(e)
+    res.status(code).send({
+      message: e.message
+    })
   }
 })
+
+const err400 = [
+  'User not exist.',
+  'Wrong password.',
+  'Missing params.'
+]
 
 export { loginRouter }
