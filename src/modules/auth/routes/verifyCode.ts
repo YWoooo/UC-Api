@@ -8,8 +8,8 @@ verifyCodeRouter.get('/verifyCode', async (req, res) => {
   try {
     checkParams(req.query)
     await getVerifyCode({
-      receiver: req.params.receiver,
-      receiverType: req.params.receiverType as VerifyCode.ReceiverType
+      receiver: req.query.receiver as string,
+      receiverType: req.query.receiverType as VerifyCode.ReceiverType
     })
     return res
       .status(200)
