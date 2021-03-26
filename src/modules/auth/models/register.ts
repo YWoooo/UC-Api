@@ -1,6 +1,7 @@
 // Utils & configs.
 import { getCollection } from '@/src/utils/get-collection';
 import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
+import { hash } from '@/src/utils/pwd-helper';
 // Types.
 import { Res } from '@/src/types/res';
 import { RegisterParams } from '../types/registerData'
@@ -16,10 +17,12 @@ export const register = async ({ email, password }: RegisterParams): Promise<Res
     const collection = await getCollection('user')
     const isEmailExist = await collection.findOne({ email })
     if (isEmailExist) return { code: 200001 }
+    const hashedPwd = await hash(password)
+
     await collection.insertOne(
       new User(
         email,
-        password,
+        hashedPwd,
         setAccountString(await collection.countDocuments())
       ))
     const data = {

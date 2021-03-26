@@ -1,5 +1,6 @@
 import { getDb } from '@/src/utils/get-db'
 import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
+import { compare } from '@/src/utils/pwd-helper';
 import { RegisterParams } from '../types/registerData'
 import { Db } from 'mongodb';
 
@@ -10,7 +11,8 @@ export const login = async ({ email, password }: RegisterParams) => {
   if (!user) {
     throw new Error('User not exist.')
   }
-  if (user?.password !== password) {
+  const isPwdRight = await compare(password, user?.password)
+  if (!isPwdRight) {
     throw new Error('Wrong password.')
   }
 
