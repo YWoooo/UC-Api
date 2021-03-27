@@ -1,19 +1,29 @@
 import { Router } from 'express'
 import { register } from '../models/register'
-import { setStatusCode } from '@/src/utils/set-status-code'
 const registerRouter = Router()
 
 registerRouter.post('/register', async (req, res) => {
-  const { email, password } = req.body
-  if (!email || !password) return res.status(400).send({ code: 400 })
-
   try {
+    const { email, password } = req.body
+    if (!email || !password) {
+      throw new Error('Missing params.')
+    }
     const sendData = await register({ email, password })
-    return res.status(setStatusCode(sendData.code)).send(sendData)
+    return res
+      .status(201)
+      .send(sendData)
+
   } catch (e) {
-    console.log('In register route: ', e)
-    res.status(500).send({ code: 500 })
+    const code = err400.indexOf(e.message) !== -1 ? 400 : 500
+    res.status(code).send({
+      message: e.message
+    })
   }
 })
+
+const err400 = [
+  'Missing params.',
+  'Email exist.'
+]
 
 export { registerRouter }

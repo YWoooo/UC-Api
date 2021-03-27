@@ -9,16 +9,16 @@ loginRouter.post('/login', async (req, res) => {
       throw new Error('Missing params.')
     }
     const { headers } = await login({ email, password })
-
     return res
       .status(200)
       .header('AccessToken', headers?.accessToken)
       .header('RefreshToken', headers?.refreshToken)
       .send({ message: 'ok' })
+
   }
   catch (e) {
-    const code = err400.indexOf(e.message) !== -1 ? 400 : 500
     console.log(e)
+    const code = err400.indexOf(e.message) !== -1 ? 400 : 500
     res.status(code).send({
       message: e.message
     })
