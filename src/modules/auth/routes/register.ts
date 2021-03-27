@@ -10,11 +10,13 @@ registerRouter.post('/register', async (req, res) => {
       throw new Error('Missing params.')
     }
 
-    const sendData =
+    const { data } =
       await register({ email, verifycode, password })
     return res
       .status(201)
-      .send(sendData)
+      .header('AccessToken', data.accessToken)
+      .header('RefreshToken', data.refreshToken)
+      .send({ message: 'ok' })
 
   } catch (e) {
     const code = err400.indexOf(e.message) !== -1 ? 400 : 500
