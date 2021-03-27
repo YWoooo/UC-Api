@@ -2,22 +2,25 @@
 import { getDb } from '@/src/utils/get-db'
 import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
 import { hash } from '@/src/utils/pwd-helper';
+import checkVerifyCode from '@/src/utils/check-verifycode'
 // Types.
 import { Db } from 'mongodb';
 import { RegisterParams } from '../types/registerData'
 import User from '@/src/types/user';
 
 export const register =
-  async ({ email, password }: RegisterParams) => {
+  async ({ email, verifycode, password }: RegisterParams) => {
 
     const db = await getDb()
     await checkIsEmailExist(db, email)
+    await checkVerifyCode(email, 'email', verifycode)
     await createUser(db, email, password)
     const tokens = setTokens(email)
 
     return {
       code: 201,
-      data: tokens
+      data: tokens,
+      message: 'ok'
     }
   }
 

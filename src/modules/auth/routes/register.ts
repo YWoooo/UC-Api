@@ -4,11 +4,14 @@ const registerRouter = Router()
 
 registerRouter.post('/register', async (req, res) => {
   try {
-    const { email, password } = req.body
-    if (!email || !password) {
+    const { email, verifycode, password } = req.body
+    const isMissingParams = !email || !verifycode || !password
+    if (isMissingParams) {
       throw new Error('Missing params.')
     }
-    const sendData = await register({ email, password })
+
+    const sendData =
+      await register({ email, verifycode, password })
     return res
       .status(201)
       .send(sendData)
@@ -21,9 +24,13 @@ registerRouter.post('/register', async (req, res) => {
   }
 })
 
+// TODO: custom error object with code.
 const err400 = [
   'Missing params.',
-  'Email exist.'
+  'Email exist.',
+  'Find no verify code.',
+  'Verify code expire.',
+  'Wrong verify code.'
 ]
 
 export { registerRouter }
