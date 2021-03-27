@@ -3,7 +3,7 @@ import { getDb } from '@/src/utils/get-db'
 import { VerifyCode } from '../types/VerifyCode'
 import { Db } from 'mongodb'
 
-export const getVerifyCode = async ({ receiver, receiverType }: VerifyCode.Params) => {
+export const postVerifyCode = async ({ receiver, receiverType }: VerifyCode.Params) => {
   const db = await getDb()
   const isInCooldown = await checkIsInCooldown({ receiver, receiverType }, db)
   if (isInCooldown) {

@@ -1,15 +1,15 @@
 import { Router } from 'express'
-import { getVerifyCode } from '../models/getVerifyCode'
+import { postVerifyCode } from '../models/postVerifyCode'
 import { VerifyCode } from '../types/VerifyCode'
 
 const verifyCodeRouter = Router()
 
-verifyCodeRouter.get('/verifyCode', async (req, res) => {
+verifyCodeRouter.post('/verifyCode', async (req, res) => {
   try {
-    checkParams(req.query)
-    await getVerifyCode({
-      receiver: req.query.receiver as string,
-      receiverType: req.query.receiverType as VerifyCode.ReceiverType
+    checkParams(req.body)
+    await postVerifyCode({
+      receiver: req.body.receiver as string,
+      receiverType: req.body.receiverType as VerifyCode.ReceiverType
     })
     return res
       .status(200)
@@ -26,8 +26,8 @@ verifyCodeRouter.get('/verifyCode', async (req, res) => {
   }
 })
 
-const checkParams = (query: any) => {
-  const { receiver, receiverType } = query
+const checkParams = (body: any) => {
+  const { receiver, receiverType } = body
   if (!receiver || !receiverType) {
     throw new Error('Missing params.')
   }
