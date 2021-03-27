@@ -1,10 +1,13 @@
 import { getDb } from '@/src/utils/get-db'
 import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
 import { compare } from '@/src/utils/pwd-helper';
-import { RegisterParams } from '../types/registerData'
 import { Db } from 'mongodb';
+interface LoginParms {
+  email: string;
+  password: string;
+}
 
-export const login = async ({ email, password }: RegisterParams) => {
+export const login = async ({ email, password }: LoginParms) => {
   const db = await getDb()
   const user = await db.collection('user').findOne({ email })
 
