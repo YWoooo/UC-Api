@@ -1,3 +1,4 @@
+import MissingParamsError from '@/src/errors/MissingParams'
 import CustomError from '@/src/errors/prototype'
 import { trasnferConfigs } from '../configs/transfer-configs'
 // Types.
@@ -12,6 +13,11 @@ export const transfer = async (params: TransferParams) => {
   checkParams(params)
 
   const { fromAccount, toAccount, amount } = params
+  const isParamsMissing = !fromAccount || !toAccount || !amount
+  if (isParamsMissing) {
+    throw new MissingParamsError()
+  }
+
   const db = await getDb()
   const users = db.collection('user')
 
