@@ -3,7 +3,7 @@ import CustomError from './prototype'
 export default class UserNotExistError extends CustomError {
   constructor(params = {
     name: 'UserNotExistError',
-    status: 400,
+    status: 404,
   }) {
     super(params)
   }
