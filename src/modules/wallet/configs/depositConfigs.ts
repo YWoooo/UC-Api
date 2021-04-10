@@ -1,5 +1,5 @@
 export const DepositConfigs = {
     rate: 1,
     minAmount: 100,
-    maxAmount: 1500
+    maxAmount: 10000
 }
