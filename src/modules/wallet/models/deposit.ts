@@ -4,7 +4,6 @@ import { Db } from 'mongodb';
 import { DepositParams } from '../types/deposit';
 // Utils.
 import { getDb } from '@/src/utils/get-db';
-import checkIsParamsMissing from '../utils/checkIsParamsMissing'
 import checkIsAmountInLimit from '../utils/checkIsAmountInLimit'
 import checkIsRateCorrect from '../utils/checkIsRateCorrect'
 import checkIsAmountCorrect from '../utils/checkIsAmountCorrect'
@@ -19,8 +18,6 @@ export const deposit = async (params: DepositParams) => {
 }
 
 const checkParams = (params: DepositParams) => {
-  checkIsParamsMissing(params)
-
   const {
     fromAmount,
     toAmount,
