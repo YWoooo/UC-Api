@@ -1,3 +1,4 @@
+import MissingParamsError from '@/src/errors/MissingParams'
 import UserNotExistError from '@/src/errors/UserNotExist'
 import { DepositConfigs } from '../configs/depositConfigs'
 // Types.
@@ -24,6 +25,10 @@ const checkParams = (params: DepositParams) => {
     toAmount,
     rate: clientRate
   } = params
+  const isParamsMissing = !fromAmount || !toAmount || !clientRate
+  if (isParamsMissing) {
+    throw new MissingParamsError()
+  }
 
   const {
     rate: serverRate,

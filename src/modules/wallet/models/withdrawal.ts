@@ -1,3 +1,4 @@
+import MissingParamsError from '@/src/errors/MissingParams'
 import UserNotExistError from '@/src/errors/UserNotExist'
 import { withdrawalConfigs } from '../configs/withdrawal-configs';
 // Types.
@@ -26,6 +27,11 @@ const checkParams = (params: WithdrawalParams) => {
     toAmount,
     rate: clientRate
   } = params
+
+  const isParamsMissing = !fromAmount || !toAmount || !clientRate
+  if (isParamsMissing) {
+    throw new MissingParamsError()
+  }
 
   const {
     rate: serverRate,
