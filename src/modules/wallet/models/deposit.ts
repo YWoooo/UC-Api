@@ -1,5 +1,6 @@
 import UserNotExistError from '@/src/errors/UserNotExist'
 import { DepositConfigs } from '../configs/depositConfigs'
+// Types.
 import { Db } from 'mongodb';
 import { DepositParams } from '../types/deposit';
 // Utils.

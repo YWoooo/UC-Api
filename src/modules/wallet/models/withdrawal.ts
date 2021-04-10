@@ -1,14 +1,44 @@
-import { Res } from '@/src/types/res';
+import UserNotExistError from '@/src/errors/UserNotExist'
+import { withdrawalConfigs } from '../configs/withdrawal-configs';
+// Types.
+import { Db } from 'mongodb';
 import { WithdrawalParams } from '../types/withdrawal';
+// Utils.
 import { getDb } from '@/src/utils/get-db';
-import { checkWithdrawalParams } from '../utils/check-params';
+import checkIsInOfficeHour from '../utils/checkIsInOfficeHour'
+import checkIsAmountInLimit from '../utils/checkIsAmountInLimit'
+import checkIsRateCorrect from '../utils/checkIsRateCorrect'
+import checkIsAmountCorrect from '../utils/checkIsAmountCorrect'
 import { addWithdrawalRecord } from '../utils/add-record'
 
-export const withdrawal = async (params: WithdrawalParams): Promise<Res> => {
-  let code = 0
-  code = checkWithdrawalParams(params)
-  if (code) return { code }
+export const withdrawal = async (params: WithdrawalParams) => {
+  checkIsInOfficeHour()
+  checkParams(params)
+  const db = await getDb()
 
+  await updateBalance(params, db)
+  addWithdrawalRecord(params, db)
+}
+
+const checkParams = (params: WithdrawalParams) => {
+  const {
+    fromAmount,
+    toAmount,
+    rate: clientRate
+  } = params
+
+  const {
+    rate: serverRate,
+    minAmount,
+    maxAmount
+  } = withdrawalConfigs
+
+  checkIsAmountInLimit(fromAmount, minAmount, maxAmount)
+  checkIsRateCorrect(clientRate, serverRate)
+  checkIsAmountCorrect(fromAmount, toAmount)
+}
+
+const updateBalance = async (params: WithdrawalParams, db: Db) => {
   const { account, fromAmount } = params
   const filter = {
     account,
@@ -18,17 +48,12 @@ export const withdrawal = async (params: WithdrawalParams): Promise<Res> => {
     $inc: { balance: -fromAmount }
   }
 
-  try {
-    const db = await getDb()
-    const res = await db.collection('user').findOneAndUpdate(filter, update)
-    addWithdrawalRecord(params, db)
-    code = res.value ? 201 : 400
-  }
-  catch (e) {
-    console.log('In withdrawal model: ', e)
-    code = 500
-  }
-  finally {
-    return { code }
+  const res = await db
+    .collection('user')
+    .findOneAndUpdate(filter, update)
+
+  const isUserExist = res.value
+  if (!isUserExist) {
+    throw new UserNotExistError()
   }
 }
