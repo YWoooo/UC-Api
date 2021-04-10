@@ -1,41 +1,33 @@
+import CustomError from '@/src/errors/prototype'
+import { trasnferConfigs } from '../configs/transfer-configs'
 // Types.
-import { Res } from '@/src/types/res';
 import { TransferParams } from '../types/transfer'
 import { Collection } from 'mongodb';
 // Utils & configs.
 import { getDb } from '@/src/utils/get-db';
-import { checkTransferParams } from '../utils/check-params';
+import checkIsAmountInLimit from '../utils/checkIsAmountInLimit'
 import { addTransferRecord } from '../utils/add-record'
-import { resCode } from '@/src/configs/resCode'
 
-export const transfer = async (params: TransferParams): Promise<Res> => {
-  let code = 0
-  code = checkTransferParams(params)
-  if (code) return { code }
+export const transfer = async (params: TransferParams) => {
+  checkParams(params)
 
   const { fromAccount, toAccount, amount } = params
-  if (!fromAccount || !toAccount) return { code: 400000 }
+  const db = await getDb()
+  const users = db.collection('user')
 
-  try {
-    const db = await getDb()
-    const users = db.collection('user')
+  await takeBalance(users, fromAccount, amount)
+  await addBalance(users, toAccount, amount)
 
-    const res = await Promise.all([
-      takeMoney(users, fromAccount, amount),
-      addMoney(users, toAccount, amount)
-    ])
-    code = res[0] || res[1]
-
-    addTransferRecord(params, db)
-    return { code }
-  }
-  catch (e) {
-    console.log('In transfer model: ', e)
-    return { code: 500 }
-  }
+  addTransferRecord(params, db)
 }
 
-const takeMoney = async (users: Collection, account: string, amount: number): Promise<number> => {
+const checkParams = (params: TransferParams) => {
+  const { amount } = params
+  const { minAmount, maxAmount } = trasnferConfigs
+  checkIsAmountInLimit(amount, minAmount, maxAmount)
+}
+
+const takeBalance = async (users: Collection, account: string, amount: number) => {
   const filter = {
     account,
     balance: { $gt: amount }
@@ -44,13 +36,28 @@ const takeMoney = async (users: Collection, account: string, amount: number): Pr
     $inc: { balance: -amount }
   }
   const res = await users.findOneAndUpdate(filter, update)
-  return res.value ? 0 : 400
+
+  const isUserExist = res.value
+  if (!isUserExist) {
+    throw new CustomError({
+      name: 'FromAccountNotExistError',
+      status: 404
+    })
+  }
 }
-const addMoney = async (users: Collection, account: string, amount: number): Promise<number> => {
+
+const addBalance = async (users: Collection, account: string, amount: number) => {
   const filter = { account }
   const update = {
     $inc: { balance: amount }
   }
   const res = await users.findOneAndUpdate(filter, update)
-  return res.value ? 201 : resCode.notExistUser
+
+  const isUserExist = res.value
+  if (!isUserExist) {
+    throw new CustomError({
+      name: 'ToAccountNotExistError',
+      status: 404
+    })
+  }
 }
