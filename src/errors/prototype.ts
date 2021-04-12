@@ -6,6 +6,7 @@ export default class CustomError extends Error {
   public name: string
   public status: number
   public message: string
+  public isPublic: boolean
 
   constructor(params: ErrorParams) {
     super(params.message);
@@ -15,10 +16,12 @@ export default class CustomError extends Error {
     this.name = params.name
     this.status = params.status
     this.message = params.message || ''
+    this.isPublic = params.isPublic || false
   }
 }
 interface ErrorParams {
   name: string
   status: number
   message?: string
+  isPublic?: boolean // Default false.
 }

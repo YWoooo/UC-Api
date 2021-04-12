@@ -11,7 +11,7 @@ export default (e: CustomError | Error, res: Response) => {
 const onCustomError = (e: CustomError, res: Response) => {
   const { status, message } = e
   res.status(status).send({
-    error: e.name,
+    error: e,
     message
   })
 }
