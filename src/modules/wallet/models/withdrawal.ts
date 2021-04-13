@@ -23,12 +23,13 @@ export const withdrawal = async (params: WithdrawalParams) => {
 
 const checkParams = (params: WithdrawalParams) => {
   const {
+    account,
     fromAmount,
     toAmount,
     rate: clientRate
   } = params
 
-  const isParamsMissing = !fromAmount || !toAmount || !clientRate
+  const isParamsMissing = !account || !fromAmount || !toAmount || !clientRate
   if (isParamsMissing) {
     throw new MissingParamsError()
   }
