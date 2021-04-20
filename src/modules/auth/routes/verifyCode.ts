@@ -1,42 +1,21 @@
 import { Router } from 'express'
+import handleErrInRoute from '@/src/errors/handleErrInRoute'
 import { postVerifyCode } from '../models/postVerifyCode'
 import { VerifyCode } from '../types/VerifyCode'
-
 const verifyCodeRouter = Router()
 
 verifyCodeRouter.post('/verifyCode', async (req, res) => {
   try {
-    checkParams(req.body)
     await postVerifyCode({
       receiver: req.body.receiver as string,
       receiverType: req.body.receiverType as VerifyCode.ReceiverType
     })
     return res
-      .status(200)
+      .status(201)
       .send({ message: 'ok' })
   } catch (e) {
-    console.log('In verify code route: ', e.message)
-    const is400 =
-      e.message === 'Missing params.' ||
-      e.message === 'Receiver type wrong.' ||
-      e.message === 'It\'s in cooldown.'
-    is400
-      ? res.status(400).send({ message: e.message })
-      : res.status(500).send({ code: 500 })
+    handleErrInRoute(e, res)
   }
 })
-
-const checkParams = (body: any) => {
-  const { receiver, receiverType } = body
-  if (!receiver || !receiverType) {
-    throw new Error('Missing params.')
-  }
-  if (
-    receiverType !== 'email' &&
-    receiverType !== 'phone'
-  ) {
-    throw new Error('Receiver type wrong.')
-  }
-}
 
 export { verifyCodeRouter }
