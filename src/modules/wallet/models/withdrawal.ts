@@ -6,14 +6,15 @@ import { Db } from 'mongodb';
 import { WithdrawalParams } from '../types/withdrawal';
 // Utils.
 import { getDb } from '@/src/utils/get-db';
-import checkIsInOfficeHour from '../utils/checkIsInOfficeHour'
+import checkVerifyCode from '@/src/utils/check-verifycode'
 import checkIsAmountInLimit from '../utils/checkIsAmountInLimit'
 import checkIsRateCorrect from '../utils/checkIsRateCorrect'
 import checkIsAmountCorrect from '../utils/checkIsAmountCorrect'
 import { addWithdrawalRecord } from '../utils/add-record'
 
 export const withdrawal = async (params: WithdrawalParams) => {
-  checkIsInOfficeHour()
+  const { receiver, receiverType, code } = params.verifycode
+  await checkVerifyCode(receiver, receiverType, code)
   checkParams(params)
   const db = await getDb()
 
