@@ -2,6 +2,11 @@ import { PayParams } from './pay'
 
 export interface WithdrawalParams extends PayParams {
   mode: WithdrawalMode
+  verifycode: {
+    code: string
+    receiver: string
+    receiverType: 'email' | 'phone'
+  }
 }
 export enum WithdrawalMode {
   bankCard,
