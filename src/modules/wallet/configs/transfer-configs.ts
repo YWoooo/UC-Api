@@ -1,4 +1,4 @@
 export const trasnferConfigs = {
   minAmount: 100,
-  maxAmount: 1500,
+  maxAmount: 10000,
 }
