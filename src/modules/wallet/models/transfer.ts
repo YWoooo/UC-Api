@@ -59,7 +59,6 @@ const takeBalance = async (users: Collection, account: string, amount: number) =
     throw new CustomError({
       name: 'FromAccountNotExistError',
       status: 404,
-      isPublic: true
     })
   }
 }
