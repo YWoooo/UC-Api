@@ -13,10 +13,6 @@ export const transfer = async (params: TransferParams) => {
   checkParams(params)
 
   const { fromAccount, toAccount, amount } = params
-  const isParamsMissing = !fromAccount || !toAccount || !amount
-  if (isParamsMissing) {
-    throw new MissingParamsError()
-  }
 
   const db = await getDb()
   const users = db.collection('user')
@@ -28,8 +24,23 @@ export const transfer = async (params: TransferParams) => {
 }
 
 const checkParams = (params: TransferParams) => {
-  const { amount } = params
+  const { fromAccount, toAccount, amount } = params
   const { minAmount, maxAmount } = trasnferConfigs
+
+  const isSameAccount = fromAccount === toAccount
+  if (isSameAccount) {
+    throw new CustomError({
+      name: 'SameAccountError',
+      status: 400,
+      isPublic: false
+    })
+  }
+
+  const isParamsMissing = !fromAccount || !toAccount || !amount
+  if (isParamsMissing) {
+    throw new MissingParamsError()
+  }
+
   checkIsAmountInLimit(amount, minAmount, maxAmount)
 }
 
@@ -47,7 +58,8 @@ const takeBalance = async (users: Collection, account: string, amount: number) =
   if (!isUserExist) {
     throw new CustomError({
       name: 'FromAccountNotExistError',
-      status: 404
+      status: 404,
+      isPublic: true
     })
   }
 }
@@ -63,7 +75,8 @@ const addBalance = async (users: Collection, account: string, amount: number) =>
   if (!isUserExist) {
     throw new CustomError({
       name: 'ToAccountNotExistError',
-      status: 404
+      status: 404,
+      isPublic: true
     })
   }
 }
