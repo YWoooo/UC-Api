@@ -9,6 +9,7 @@ import { loginRouter } from './modules/auth/routes/login'
 import { registerRouter } from './modules/auth/routes/register'
 import { verifyCodeRouter } from './modules/auth/routes/verifyCode'
 import { userInfoRouter } from './modules/user-info/routes/user-info'
+import { bankcardRouter } from './modules/wallet/routes/bankcard'
 import { depositRouter } from './modules/wallet/routes/deposit'
 import { withdrawalRouter } from './modules/wallet/routes/withdrawal'
 import { transferRouter } from './modules/wallet/routes/transfer'
@@ -25,11 +26,13 @@ const corsOptions = {
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
+// TODO: an more elegant way to use middleware?
 app.use(loginRouter)
 app.use(registerRouter)
 app.use(verifyCodeRouter)
 app.use(authByToken);
 app.use(userInfoRouter)
+app.use(bankcardRouter)
 app.use(depositRouter)
 app.use(withdrawalRouter)
 app.use(transferRouter)
