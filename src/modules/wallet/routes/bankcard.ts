@@ -15,7 +15,7 @@ bankcardRouter.post(
     try {
       await addBankcard({
         account: res.locals.account,
-        imgs: getBufferString(req.files as Express.Multer.File[]),
+        imgs: req.files,
         ...req.body
       })
       return res.status(201).send({
