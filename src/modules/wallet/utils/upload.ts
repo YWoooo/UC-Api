@@ -20,6 +20,3 @@ export const upload = multer({
   limits,
   fileFilter
 })
-
-export const getBuffers = (files: Express.Multer.File[]) =>
-  files.map((file: Express.Multer.File) => file.buffer)

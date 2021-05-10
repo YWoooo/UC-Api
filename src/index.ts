@@ -26,13 +26,13 @@ const corsOptions = {
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
-// TODO: an more elegant way to use middleware?
 app.use(loginRouter)
 app.use(registerRouter)
 app.use(verifyCodeRouter)
+app.use(bankcardRouter) // Including bankcardimg router, which probably shouldn't need token to auth.
 app.use(authByToken);
+userInfoRouter.use(authByToken)
 app.use(userInfoRouter)
-app.use(bankcardRouter)
 app.use(depositRouter)
 app.use(withdrawalRouter)
 app.use(transferRouter)

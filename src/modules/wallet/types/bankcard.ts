@@ -7,5 +7,5 @@ export interface Bankcard {
   bankAddress: string;
   ccy: string;
   swiftcode: string;
-  imgs: File;
+  imgs: File[];
 }
