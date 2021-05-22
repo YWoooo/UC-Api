@@ -15,7 +15,7 @@ import { withdrawalRouter } from './modules/wallet/routes/withdrawal'
 import { transferRouter } from './modules/wallet/routes/transfer'
 
 // Middlewares.
-import authByToken from './middelware/authByToken';
+import verifyJwt from './middelware/verifyJwt';
 
 const app = express()
 const corsOptions = {
@@ -30,8 +30,7 @@ app.use(loginRouter)
 app.use(registerRouter)
 app.use(verifyCodeRouter)
 app.use(bankcardRouter) // Including bankcardimg router, which probably shouldn't need token to auth.
-app.use(authByToken);
-userInfoRouter.use(authByToken)
+app.use(verifyJwt);
 app.use(userInfoRouter)
 app.use(depositRouter)
 app.use(withdrawalRouter)

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const jwtKey = process.env.JWT_KEY as string
 const accessTokenOptions = {
-  expiresIn: '15m'
+  expiresIn: '1s'
 }
 const refreshTokenOptions = {
   expiresIn: '1 day'

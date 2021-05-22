@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import authByToken from '@/src/middelware/authByToken';
+import verifyJwt from '@/src/middelware/verifyJwt';
 import { upload } from '../utils/upload'
 import handleErrInRoute from '@/src/errors/handleErrInRoute'
 import { addBankcard } from '../models/addBankcard'
@@ -9,7 +9,7 @@ const bankcardRouter = Router()
 
 bankcardRouter.post(
   '/wallet/bankcard',
-  authByToken,
+  verifyJwt,
   upload.array('imgs', 3),
   async (req, res) => {
     try {
