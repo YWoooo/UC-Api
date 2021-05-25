@@ -12,7 +12,7 @@ export default async (
   res: Response,
   next: NextFunction,
 ) => {
-  const refreshToken = req.header('RefreshToken')
+  const refreshToken = req.header('refreshToken')
   if (!refreshToken) {
     throw noRefreshTokenError
   }
@@ -46,13 +46,12 @@ const checkDBAndSetHeader = async (res: Response, refreshToken: string) => {
   if (!user.value) {
     const error = verifyFailError
     error.message =
-      'Didn\'t find any user in loggedin-user collection,' +
-      'which means either the user doesn\'t exist,' +
-      'or something went wrong when the login model findOneAndUpdate that collection.'
+      'Didn\'t find any user in loggedin-user collection.'
     throw error
   }
-  res.setHeader('AccessToken', setAccessToken(account))
-  res.setHeader("RefreshToken", newRefreshToken)
+  res.setHeader('accessToken', setAccessToken(account))
+  res.setHeader("refreshToken", newRefreshToken)
+  res.locals.account = account
 }
 
 const noRefreshTokenError = new CustomError({

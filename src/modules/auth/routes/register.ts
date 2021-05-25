@@ -14,8 +14,8 @@ registerRouter.post('/register', async (req, res) => {
       await register({ email, verifycode, password })
     return res
       .status(201)
-      .header('AccessToken', data.accessToken)
-      .header('RefreshToken', data.refreshToken)
+      .header('accessToken', data.accessToken)
+      .header('refreshToken', data.refreshToken)
       .send({ message: 'ok' })
 
   } catch (e) {

@@ -20,7 +20,7 @@ import verifyJwt from './middelware/verifyJwt';
 const app = express()
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://yw-uc.herokuapp.com'],
-  exposedHeaders: ['AccessToken', 'RefreshToken']
+  exposedHeaders: ['accessToken', 'refreshToken']
 }
 
 app.use(bodyParser.urlencoded({ extended: true }))

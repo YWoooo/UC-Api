@@ -11,8 +11,8 @@ loginRouter.post('/login', async (req, res) => {
     const { headers } = await login({ email, password })
     return res
       .status(200)
-      .header('AccessToken', headers?.accessToken)
-      .header('RefreshToken', headers?.refreshToken)
+      .header('accessToken', headers?.accessToken)
+      .header('refreshToken', headers?.refreshToken)
       .send({ message: 'ok' })
 
   }
