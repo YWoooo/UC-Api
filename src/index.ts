@@ -22,6 +22,7 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'http://localhost:8080',
+    'https://ywchang-wallet.netlify.app',
     'https://yw-uc.herokuapp.com',
   ],
   exposedHeaders: ['accessToken', 'refreshToken']
