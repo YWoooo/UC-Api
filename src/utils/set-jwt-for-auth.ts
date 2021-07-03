@@ -5,7 +5,7 @@ const accessTokenOptions = {
   expiresIn: '15m'
 }
 const refreshTokenOptions = {
-  expiresIn: '1 day'
+  expiresIn: '30 days'
 }
 
 export const setAccessToken = (account: string) =>
