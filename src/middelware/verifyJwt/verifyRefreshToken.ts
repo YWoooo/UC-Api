@@ -41,6 +41,7 @@ const checkDBAndSetHeader = async (res: Response, refreshToken: string) => {
       refreshToken: newRefreshToken
     }
   }
+  // TODO: cross device token.
   const user = await db.collection('loggedin-user')
     .findOneAndUpdate(query, update)
   if (!user.value) {

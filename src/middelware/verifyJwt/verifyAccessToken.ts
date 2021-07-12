@@ -28,12 +28,7 @@ export default async (
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       await verifyRefreshToken(req, res, next)
-      return 
-      /**
-       * TODO: next() inside verifyRefreshToken shouldn't be used as return,
-       * or even if the refreshToken is verified and new refreshToken is set,
-       * api will still return verifyFailError.
-       */
+      return
     }
     else if (error instanceof CustomError) {
       throw error
