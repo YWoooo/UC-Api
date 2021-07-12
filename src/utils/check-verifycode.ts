@@ -10,24 +10,23 @@ export default async (
   receiverType: VerifyCode.ReceiverType,
   code: string
 ): Promise<void> => {
-
   const db = await getDb()
   const queries = {
     receiver,
-    receiverType
+    receiverType,
   }
-  const latestVerifyCode: VerifyCode.Entity | null =
-    await db.collection('verifyCode')
-      .findOne(queries, { sort: { $natural: -1 } })
+  const latestVerifyCode: VerifyCode.Entity | null = await db
+    .collection('verifyCode')
+    .findOne(queries, { sort: { $natural: -1 } })
 
   if (!latestVerifyCode) {
-    throw new FoundNoVerifycodeError
+    throw new FoundNoVerifycodeError()
   }
   if (code !== latestVerifyCode.code) {
-    throw new WrongVerifycodeError
+    throw new WrongVerifycodeError()
   }
   if (isExpire(latestVerifyCode.expire)) {
-    throw new VerifycodeExpireError
+    throw new VerifycodeExpireError()
   }
 }
 

@@ -7,7 +7,7 @@ withdrawalRouter.post('/withdrawal', async (req, res) => {
   try {
     await withdrawal(req.body)
     return res.status(201).send({
-      message: 'ok'
+      message: 'ok',
     })
   } catch (e) {
     handleErrInRoute(e, res)

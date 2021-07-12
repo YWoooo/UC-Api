@@ -1,10 +1,10 @@
 import { getDb } from '@/src/utils/get-db'
-import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth';
-import { compare } from '@/src/utils/pwd-helper';
-import { Db } from 'mongodb';
+import { setAccessToken, setRefreshToken } from '@/src/utils/set-jwt-for-auth'
+import { compare } from '@/src/utils/pwd-helper'
+import { Db } from 'mongodb'
 interface LoginParms {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export const login = async ({ email, password }: LoginParms) => {
@@ -21,10 +21,10 @@ export const login = async ({ email, password }: LoginParms) => {
 
   const headers = {
     accessToken: setAccessToken(user.account),
-    refreshToken: await storeRefreshToken(db, user.account)
+    refreshToken: await storeRefreshToken(db, user.account),
   }
   return {
-    headers
+    headers,
   }
 }
 
@@ -33,10 +33,6 @@ const storeRefreshToken = async (db: Db, account: string) => {
   const query = { account }
   const update = { $set: { refreshToken } }
   const options = { upsert: true }
-  await db.collection('loggedin-user').findOneAndUpdate(
-    query,
-    update,
-    options
-  )
+  await db.collection('loggedin-user').findOneAndUpdate(query, update, options)
   return refreshToken
 }

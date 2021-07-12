@@ -5,22 +5,24 @@ import MissingParamsError from '@/src/errors/MissingParams'
 import { VerifyCode } from '../types/VerifyCode'
 import { Db } from 'mongodb'
 
-export const postVerifyCode = async ({ receiver, receiverType }: VerifyCode.Params) => {
+export const postVerifyCode = async ({
+  receiver,
+  receiverType,
+}: VerifyCode.Params) => {
   checkParams({ receiver, receiverType })
   const db = await getDb()
 
   await checkIsInCooldown({ receiver, receiverType }, db)
   const verifyCodeData = setVerifyCodeData({ receiver, receiverType })
 
-  db.collection('verifyCode')
-    .insertOne(verifyCodeData)
+  db.collection('verifyCode').insertOne(verifyCodeData)
 }
 
 const checkParams = (body: any) => {
   const { receiver, receiverType } = body
   const isMissingParams = !receiver || !receiverType
   if (isMissingParams) {
-    throw new MissingParamsError
+    throw new MissingParamsError()
   }
 
   const isReceiverTypeWrong =
@@ -28,7 +30,7 @@ const checkParams = (body: any) => {
   if (isReceiverTypeWrong) {
     throw new CustomError({
       name: 'WrongReceiverTypeError',
-      status: 400
+      status: 400,
     })
   }
 }
@@ -42,12 +44,13 @@ const checkIsInCooldown = async (queries: VerifyCode.Params, db: Db) => {
   const lastRecord = verifyCodeRecords[0]
 
   if (lastRecord) {
-    const isIn60sec = Math.floor(Date.now() / 1000) - lastRecord.createdTime < 60
+    const isIn60sec =
+      Math.floor(Date.now() / 1000) - lastRecord.createdTime < 60
     if (isIn60sec) {
       throw new CustomError({
         name: 'InCooldownError',
         status: 400,
-        isPublic: true
+        isPublic: true,
       })
     }
   }
@@ -58,8 +61,8 @@ const setVerifyCodeData = ({ receiver, receiverType }: VerifyCode.Params) => {
   return {
     receiver,
     receiverType,
-    code: (Math.floor(100000 + Math.random() * 900000)) + '',
+    code: Math.floor(100000 + Math.random() * 900000) + '',
     createdTime,
-    expire: createdTime + 600
+    expire: createdTime + 600,
   }
 }

@@ -1,9 +1,9 @@
 // Types.
-import { Bankcard } from '../types/bankcard';
-import { BankCardStatus } from '@/src/types/BankCardStatus';
+import { Bankcard } from '../types/bankcard'
+import { BankCardStatus } from '@/src/types/BankCardStatus'
 // Utils.
 import sharp from 'sharp'
-import { getDb } from '@/src/utils/get-db';
+import { getDb } from '@/src/utils/get-db'
 import MissingParamsError from '@/src/errors/MissingParams'
 import timestamp from '@/src/utils/formatter/timestamp'
 
@@ -46,23 +46,20 @@ const addRecord = async (bankcard: Bankcard.FromClient) => {
   records.insertOne(record)
 }
 
-const setBankcardToDb =
-  async (bankcard: Bankcard.FromClient): Promise<Bankcard.InDb> => {
-    return {
-      ...bankcard,
-      imgs: await Promise.all(
-        bankcard.imgs.map(
-          async (img) => await sharpAndToStr(img))
-      ),
-      createdTime: timestamp(),
-      status: BankCardStatus.reviewing
-    }
+const setBankcardToDb = async (
+  bankcard: Bankcard.FromClient
+): Promise<Bankcard.InDb> => {
+  return {
+    ...bankcard,
+    imgs: await Promise.all(
+      bankcard.imgs.map(async img => await sharpAndToStr(img))
+    ),
+    createdTime: timestamp(),
+    status: BankCardStatus.reviewing,
   }
+}
 
 const sharpAndToStr = async (img: Express.Multer.File) => {
-  const buffer = await sharp(img.buffer)
-    .resize(300, null)
-    .png()
-    .toBuffer()
+  const buffer = await sharp(img.buffer).resize(300, null).png().toBuffer()
   return buffer.toString('base64')
 }

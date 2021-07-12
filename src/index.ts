@@ -1,4 +1,4 @@
-import 'module-alias/register';
+import 'module-alias/register'
 require('dotenv').config({ path: './process.env' })
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -15,7 +15,7 @@ import { withdrawalRouter } from './modules/wallet/routes/withdrawal'
 import { transferRouter } from './modules/wallet/routes/transfer'
 
 // Middlewares.
-import verifyJwt from './middelware/verifyJwt';
+import verifyJwt from './middelware/verifyJwt'
 
 const app = express()
 const corsOptions = {
@@ -25,7 +25,7 @@ const corsOptions = {
     'https://ywchang-wallet.netlify.app',
     'https://yw-uc.herokuapp.com',
   ],
-  exposedHeaders: ['accessToken', 'refreshToken']
+  exposedHeaders: ['accessToken', 'refreshToken'],
 }
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -35,7 +35,7 @@ app.use(loginRouter)
 app.use(registerRouter)
 app.use(verifyCodeRouter)
 app.use(bankcardRouter) // Including bankcardimg router, which probably shouldn't need token to auth.
-app.use(verifyJwt);
+app.use(verifyJwt)
 app.use(userInfoRouter)
 app.use(depositRouter)
 app.use(withdrawalRouter)

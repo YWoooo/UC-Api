@@ -3,9 +3,9 @@ import CustomError from '@/src/errors/prototype'
 import { trasnferConfigs } from '../configs/transfer-configs'
 // Types.
 import { TransferParams } from '../types/transfer'
-import { Collection } from 'mongodb';
+import { Collection } from 'mongodb'
 // Utils & configs.
-import { getDb } from '@/src/utils/get-db';
+import { getDb } from '@/src/utils/get-db'
 import checkIsAmountInLimit from '../utils/checkIsAmountInLimit'
 import { addTransferRecord } from '../utils/add-record'
 
@@ -32,7 +32,7 @@ const checkParams = (params: TransferParams) => {
     throw new CustomError({
       name: 'SameAccountError',
       status: 400,
-      isPublic: false
+      isPublic: false,
     })
   }
 
@@ -44,13 +44,17 @@ const checkParams = (params: TransferParams) => {
   checkIsAmountInLimit(amount, minAmount, maxAmount)
 }
 
-const takeBalance = async (users: Collection, account: string, amount: number) => {
+const takeBalance = async (
+  users: Collection,
+  account: string,
+  amount: number
+) => {
   const filter = {
     account,
-    balance: { $gt: amount }
+    balance: { $gt: amount },
   }
   const update = {
-    $inc: { balance: -amount }
+    $inc: { balance: -amount },
   }
   const res = await users.findOneAndUpdate(filter, update)
 
@@ -63,10 +67,14 @@ const takeBalance = async (users: Collection, account: string, amount: number) =
   }
 }
 
-const addBalance = async (users: Collection, account: string, amount: number) => {
+const addBalance = async (
+  users: Collection,
+  account: string,
+  amount: number
+) => {
   const filter = { account }
   const update = {
-    $inc: { balance: amount }
+    $inc: { balance: amount },
   }
   const res = await users.findOneAndUpdate(filter, update)
 
@@ -75,7 +83,7 @@ const addBalance = async (users: Collection, account: string, amount: number) =>
     throw new CustomError({
       name: 'ToAccountNotExistError',
       status: 404,
-      isPublic: true
+      isPublic: true,
     })
   }
 }

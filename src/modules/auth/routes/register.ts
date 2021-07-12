@@ -10,18 +10,16 @@ registerRouter.post('/register', async (req, res) => {
       throw new Error('Missing params.')
     }
 
-    const { data } =
-      await register({ email, verifycode, password })
+    const { data } = await register({ email, verifycode, password })
     return res
       .status(201)
       .header('accessToken', data.accessToken)
       .header('refreshToken', data.refreshToken)
       .send({ message: 'ok' })
-
   } catch (e) {
     const code = err400.indexOf(e.message) !== -1 ? 400 : 500
     res.status(code).send({
-      message: e.message
+      message: e.message,
     })
   }
 })
@@ -32,7 +30,7 @@ const err400 = [
   'Email exist.',
   'Find no verify code.',
   'Verify code expire.',
-  'Wrong verify code.'
+  'Wrong verify code.',
 ]
 
 export { registerRouter }

@@ -1,2 +1,1 @@
-export default () =>
-  Math.floor(Date.now() / 1000)
+export default () => Math.floor(Date.now() / 1000)

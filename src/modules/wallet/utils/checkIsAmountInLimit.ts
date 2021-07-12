@@ -1,10 +1,6 @@
 import CustomError from '@/src/errors/prototype'
 
-export default (
-  fromAmount: number,
-  minAmount: number,
-  maxAmount: number
-) => {
+export default (fromAmount: number, minAmount: number, maxAmount: number) => {
   if (fromAmount < minAmount) {
     throw new CustomError({
       name: 'UnderMinAmountError',

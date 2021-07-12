@@ -14,21 +14,15 @@ loginRouter.post('/login', async (req, res) => {
       .header('accessToken', headers?.accessToken)
       .header('refreshToken', headers?.refreshToken)
       .send({ message: 'ok' })
-
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e)
     const code = err400.indexOf(e.message) !== -1 ? 400 : 500
     res.status(code).send({
-      message: e.message
+      message: e.message,
     })
   }
 })
 
-const err400 = [
-  'User not exist.',
-  'Wrong password.',
-  'Missing params.'
-]
+const err400 = ['User not exist.', 'Wrong password.', 'Missing params.']
 
 export { loginRouter }

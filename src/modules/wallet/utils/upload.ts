@@ -1,7 +1,7 @@
 import multer from 'multer'
 
 const limits = {
-  fieldSize: 10000000
+  fieldSize: 10000000,
 }
 
 const fileFilter = (
@@ -18,5 +18,5 @@ const fileTypeReg = /\.(jpg|jpeg|png)$/
 
 export const upload = multer({
   limits,
-  fileFilter
+  fileFilter,
 })

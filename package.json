@@ -9,7 +9,8 @@
     "start": "node build/index.js",
     "dev": "concurrently npm:start:*",
     "tsc": "tsc",
-    "postinstall": "npm run tsc"
+    "postinstall": "npm run tsc",
+    "lint": "eslint . --ext .js,.ts --fix"
   },
   "engines": {
     "node": "12.14.0"

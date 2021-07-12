@@ -1,5 +1,5 @@
-import { Res } from '@/src/types/res';
-import { getDb } from '@/src/utils/get-db';
+import { Res } from '@/src/types/res'
+import { getDb } from '@/src/utils/get-db'
 import User from '@/src/types/user'
 
 export const getUserInfo = async (account: string): Promise<Res<User>> => {
@@ -8,10 +8,9 @@ export const getUserInfo = async (account: string): Promise<Res<User>> => {
     const user = await db.collection('user').findOne({ account })
     return {
       code: user ? 200 : 404,
-      data: user
+      data: user,
     }
-  }
-  catch (e) {
+  } catch (e) {
     console.log('In getUserInfo model: ', e)
     return { code: 500 }
   }

@@ -7,7 +7,7 @@ transferRouter.post('/transfer', async (req, res) => {
   try {
     await transfer(req.body)
     return res.status(201).send({
-      message: 'ok'
+      message: 'ok',
     })
   } catch (e) {
     handleErrInRoute(e, res)
