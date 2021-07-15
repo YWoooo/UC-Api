@@ -64,6 +64,7 @@ const checkIsCardNoExist = async (cardNo: string, db: Db) => {
     throw new CustomError({
       name: 'CardNoExistError',
       status: 400,
+      isPublic: true,
     })
   }
 }
